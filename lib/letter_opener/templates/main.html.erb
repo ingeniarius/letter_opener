@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <% if subject %>
+            <title><%= h subject %></title>
+        <% end %>
+        <link rel="stylesheet" href="letter_opener.css" />
+    </head>
+    <body>
+        <table class="mail-wrapper">
+        <tr>
+        <td class="mail-wrapper-content">
+
+            <table class="mail-container">
+            <tr>
+                <td class="mail-header">
+                    <dl>
+                        <dt>From:</dt>
+                        <dd><%= h from %></dd>
+
+                        <% unless sender.empty? %>
+                            <dt>Sender:</dt>
+                            <dd><%= h sender %></dd>
+                        <% end %>
+
+                        <% unless reply_to.empty? %>
+                            <dt>Reply-To:</dt>
+                            <dd><%= h reply_to %></dd>
+                        <% end %>
+
+                        <% if subject %>
+                            <dt>Subject:</dt>
+                            <dd><strong><%= h subject %></strong></dd>
+                        <% end %>
+
+                        <dt>Date:</dt>
+                        <dd><%= Time.now.strftime("%b %e, %Y %I:%M:%S %p %Z") %></dd>
+
+                        <% unless to.empty? %>
+                            <dt>To:</dt>
+                            <dd><%= h to %></dd>
+                        <% end %>
+
+                        <% unless cc.empty? %>
+                            <dt>CC:</dt>
+                            <dd><%= h cc %></dd>
+                        <% end %>
+
+                        <% unless bcc.empty? %>
+                            <dt>BCC:</dt>
+                            <dd><%= h bcc %></dd>
+                        <% end %>
+
+                        <% if attachments.any? %>
+                            <dt>Attachments:</dt>
+                            <dd>
+                            <% attachments.each do |filename, path| %>
+                                <a href="<%= path %>" target="mailFrame"><%= filename %></a>&nbsp;
+                            <% end %>
+                            </dd>
+                        <% end %>
+
+                        <% if messages.size > 1 %>
+                            <dt>Views:</dt>
+                            <dd>
+                            <% messages.each do |message, i| %>
+                                <a href="<%= message.url %>" target="mailFrame"><%= message.type %> version</a>&nbsp;
+                            <% end %>
+                            </dd>
+                        <% end %>
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td class="mail-content">
+                    <iframe class="mail-frame" src="<%= messages.first.url %>" name="mailFrame"></iframe>
+                </td>
+            </tr>
+            </table>
+
+        </td>
+        </tr>
+        </table>
+    </body>
+</html>
